@@ -50,7 +50,7 @@ namespace CoverMyDotNet
 
 		public void UpdateResponse(string requestId, string tokenId, string memo)
 		{
-			var request = new Requests.PutRequest(_apiId, requestId, TokenId, memo);
+			var request = new Requests.PutRequest(_apiId, requestId, tokenId, memo);
 			Execute(request);
 		}
 

@@ -51,6 +51,9 @@ namespace CoverMyDotNet.Samples
 					DateOfBirth = "4/4/1972"
 				}
 			}).Tokens.First().Id);
+			var requests = client.GetRequests(tokens.ToArray());
+			foreach (var v in requests.Requests)
+				Console.WriteLine(v.PDFUrl);
 		}
 		public static void Main (string[] args)
 		{
@@ -58,7 +61,7 @@ namespace CoverMyDotNet.Samples
 			string secret = ConfigurationManager.AppSettings ["Secret"];
 			string host = ConfigurationManager.AppSettings ["Host"];			
 			var client = new Client (apiId, secret);
-			//MultipleRequests(client);
+			MultipleRequests(client);
 		}
 	}
 }

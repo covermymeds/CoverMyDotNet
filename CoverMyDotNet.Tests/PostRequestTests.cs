@@ -44,8 +44,8 @@ namespace CoverMyDotNet.Tests
 		[Test]
 		public void Should_Set_ApiId()
 		{
-			var queryParams = _postRequest.Parameters.Where (p => p.Type.ToString() == "QueryString");
-			Assert.That (queryParams.Any(p => p.Name == "api_id" && p.Value.ToString() == _apiId));
+			var queryParams = _postRequest.Parameters.Where (p => p.Type == ParameterType.HttpHeader);
+			Assert.That(queryParams.Any(p => p.Value.ToString() == string.Format("Bearer {0}+x-no-pass", _apiId)));
 		}
 
 		[Test]

@@ -11,10 +11,9 @@ namespace CoverMyDotNet.Requests
 			this.JsonSerializer = new CoverMyDotNet.JsonSerializer ();
 			this.Method = Method.GET;
 			Resource = "requests";
-			RequestFormat = DataFormat.Json;
-			var tokenDict = new Dictionary<string, string[]>();
-			tokenDict.Add("token_ids", tokens);
-			this.AddJsonBody (tokenDict);
+			RequestFormat = DataFormat.Json;			
+			foreach (string s in tokens)
+				this.AddQueryParameter ("token_ids[]", s);	
 			RootElement = "request";
 			this.AddQueryParameter ("v", "1");
 			this.AddParameter("Authorization", string.Format("Bearer {0}+x-no-pass", apiId), ParameterType.HttpHeader);

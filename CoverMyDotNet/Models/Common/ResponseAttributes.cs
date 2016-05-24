@@ -6,7 +6,7 @@ namespace CoverMyDotNet
 {
     public class ResponseListAttributes
     {
-        public List<ResponseAttributes> Responses{get; set;}
+        public List<ResponseAttributes> Requests{get; set;}
     }
 
     public class ResponseAttributes

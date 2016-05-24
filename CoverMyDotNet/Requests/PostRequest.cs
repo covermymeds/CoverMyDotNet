@@ -14,7 +14,7 @@ namespace CoverMyDotNet.Requests
 			this.AddJsonBody (model);
 			RootElement = "request";
 			this.AddQueryParameter ("v", "1");
-			this.AddQueryParameter ("api_id", apiId);
+			this.AddParameter("Authorization", string.Format("Bearer {0}+x-no-pass", apiId), ParameterType.HttpHeader);
 		}
 	}
 }
