@@ -1,0 +1,21 @@
+using System;
+using RestSharp;
+
+namespace CoverMyDotNet.Requests
+{
+	public class PutRequest : RestRequest
+	{
+		public PutRequest(string apiId, string requestId, string tokenId, CreateRequestModel model) : base()
+		{
+			this.JsonSerializer = new CoverMyDotNet.JsonSerializer ();
+			Method = Method.PUT;
+			Resource = string.Format("requests/{0}", requestId);
+			RequestFormat = DataFormat.Json;
+			this.AddJsonBody (model);
+			RootElement = "request";
+			this.AddQueryParameter ("v", "1");
+			this.AddParameter("Authorization", string.Format("Bearer {0}+{1}", apiId, tokenId), ParameterType.HttpHeader);
+		}
+	}
+}
+
