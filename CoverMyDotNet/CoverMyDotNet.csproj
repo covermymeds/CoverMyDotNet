@@ -42,7 +42,6 @@
     <Compile Include="Client.cs" />
     <Compile Include="Models\Common\AddressAttributes.cs" />
     <Compile Include="Models\Common\EnumeratedFields.cs" />
-    <Compile Include="Models\Common\ForeignUserAttributes.cs" />
     <Compile Include="Models\Common\PatientAttributes.cs" />
     <Compile Include="Models\Common\PayerAttributes.cs" />
     <Compile Include="Models\Common\PharmacyAttributes.cs" />
@@ -54,9 +53,7 @@
     <Compile Include="Models\Common\TokenAttributes.cs" />    
     <Compile Include="Models\Common\RemoteUserAttributes.cs" />
     <Compile Include="Models\Common\AssociatedRequestsAttributes.cs" />
-    <Compile Include="Models\Common\RequestResponseAttributes.cs" />  
     <Compile Include="Models\Common\EventAttributes.cs" />
-
     <Compile Include="Models\CreateRequestModel.cs" />  
     <Compile Include="Models\DeleteRequestModel.cs" />
     <Compile Include="Requests\GetRequest.cs" />

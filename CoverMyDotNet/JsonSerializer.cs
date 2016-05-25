@@ -42,9 +42,7 @@ namespace CoverMyDotNet
 					jsonTextWriter.QuoteChar = '"';
 
 					_serializer.Serialize(jsonTextWriter, obj);
-
-					var result = stringWriter.ToString();
-					return result;
+					return stringWriter.ToString();
 				}
 			}
 		}

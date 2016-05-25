@@ -6,14 +6,14 @@ namespace CoverMyDotNet
 	public class PatientAttributes
     {
         public string FirstName { get; set; }
-        public object MiddleName { get; set; }
+        public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public object MemberId { get; set; }
-        public object PBMMemberId { get; set; }
-        public object PhoneNumber { get; set; }
-        public object Email { get; set; }
-        public string DateOfBirth { get; set; }
-        public object Gender { get; set; }
+        public string MemberId { get; set; }
+        public string PBMMemberId { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Gender { get; set; }
         public AddressAttributes Address { get; set; }
     }
 }

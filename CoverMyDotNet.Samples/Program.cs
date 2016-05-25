@@ -20,7 +20,8 @@ namespace CoverMyDotNet.Samples
 				{
 					FirstName = "John",
 					LastName = "test1",
-					DateOfBirth = "3/4/1992"
+					DateOfBirth = DateTime.Parse("3/4/1992"),
+					PhoneNumber = "555-555-5555"
 				}
 			}).Tokens.First().Id);
 			tokens.Add(client.CreateRequest(new RequestAttributes()
@@ -34,7 +35,8 @@ namespace CoverMyDotNet.Samples
 				{
 					FirstName = "Mark",
 					LastName = "test3",
-					DateOfBirth = "3/4/1990"
+					DateOfBirth = DateTime.Parse("3/4/1990"),
+					Email = "example@example.com"
 				}
 			}).Tokens.First().Id);
 			tokens.Add(client.CreateRequest(new RequestAttributes()
@@ -42,16 +44,21 @@ namespace CoverMyDotNet.Samples
 				State = "OH",
 				Prescription = new PrescriptionAttributes()
 				{
-					DrugId = "094563"
+					DrugId = "094563",
+					Refills = 30
 				},
 				Patient = new PatientAttributes()
 				{
 					FirstName = "Tom",
 					LastName = "test2",
-					DateOfBirth = "4/4/1972"
+					DateOfBirth = DateTime.Parse("4/4/1972")
 				}
 			}).Tokens.First().Id);
 			var requests = client.GetRequests(tokens.ToArray());
+			foreach(var v in requests.Requests)
+			{
+				Console.WriteLine("Patient: {0} {1}", v.Patient.FirstName, v.Patient.LastName);
+			}
 		}
 		public static void Main (string[] args)
 		{

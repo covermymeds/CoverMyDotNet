@@ -14,15 +14,17 @@ namespace CoverMyDotNet
 
 		public Client() : base()
 		{
-			this.BaseUrl = new Uri("https://api.covermymeds.com");
+			var apiUrl = Environment.GetEnvironmentVariable("CMM_API_URL");
+			this.BaseUrl = new Uri(string.IsNullOrEmpty(apiUrl) ? 
+				"https://api.covermymeds.com" : apiUrl);
 			//try to get the api creds from the environment first
 			_apiId = Environment.GetEnvironmentVariable("CMM_API_ID");
 			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");			
 		}
 
-		public Client(string apiId, string apiSecret) : base()
+		public Client(string apiId, string apiSecret, string apiUrl = "https://api.covermymeds.com") : base()
 		{
-			this.BaseUrl = new Uri("https://api.covermymeds.com");			
+			this.BaseUrl = new Uri(apiUrl);			
 			_apiId = apiId;
 			_apiSecret = apiSecret;
 		}

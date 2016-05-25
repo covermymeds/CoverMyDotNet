@@ -5,7 +5,7 @@ namespace CoverMyDotNet
 {
 	public class CreateRequestModel
 	{
-		public ForeignUserAttributes ForeignUserAttributes { get; set; }
+		public RemoteUserAttributes RemoteUser { get; set; }
 		public RequestAttributes Request { get; set; }			
 	}
 }

@@ -5,9 +5,14 @@ namespace CoverMyDotNet
 {
 	public class AssociatedRequestsAttributes
     {
-        public List<object> Appeals { get; set; }
-        public List<object> Renewals { get; set; }
-        public object RequestBeingAppealed { get; set; }
-        public object RequestBeingRenewed { get; set; }
+    	public class Request
+    	{
+    		public string Url {get; set;}
+    		public string Href {get; set;}
+    	}
+        public List<Request> Appeals { get; set; }
+        public List<Request> Renewals { get; set; }
+        public Request RequestBeingAppealed { get; set; }
+        public Request RequestBeingRenewed { get; set; }
     }
 }

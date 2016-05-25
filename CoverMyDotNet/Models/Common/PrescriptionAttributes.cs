@@ -9,15 +9,15 @@ namespace CoverMyDotNet
         public string NDC { get; set; }
         public object PrescriptionReference { get; set; }
         public string Name { get; set; }
-        public object Strength { get; set; }
-        public object Frequency { get; set; }
-        public object DaysSupply { get; set; }
-        public string Quantity { get; set; }
-        public object Quantity_unit_of_measure { get; set; }
-        public object Rationale { get; set; }
-        public object Refills { get; set; }
-        public object DispenseAsWritten { get; set; }
-        public object DateOfService { get; set; }
+        public string Strength { get; set; }
+        public string Frequency { get; set; }
+        public int DaysSupply { get; set; }
+        public float Quantity { get; set; }
+        public string Quantity_unit_of_measure { get; set; }
+        public string Rationale { get; set; }
+        public int Refills { get; set; }
+        public bool DispenseAsWritten { get; set; }
+        public DateTime DateOfService { get; set; }
     }
 }
 

@@ -9,9 +9,9 @@ namespace CoverMyDotNet
         public string DisplayName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public object ClinicName { get; set; }
-        public object FaxNumber { get; set; }
-        public object PhoneNumber { get; set; }
+        public string ClinicName { get; set; }
+        public string FaxNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public AddressAttributes Address { get; set; }
     }
 }
