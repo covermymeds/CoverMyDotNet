@@ -8,10 +8,8 @@ namespace CoverMyDotNet.Requests
 	{
 		public GetRequests(string apiId, string[] tokens) : base()
 		{
-			this.JsonSerializer = new CoverMyDotNet.JsonSerializer ();
 			this.Method = Method.GET;
-			Resource = "requests";
-			RequestFormat = DataFormat.Json;			
+			Resource = "requests";	
 			foreach (string s in tokens)
 				this.AddQueryParameter ("token_ids[]", s);	
 			RootElement = "request";

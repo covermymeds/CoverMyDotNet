@@ -36,6 +36,7 @@ namespace CoverMyDotNet.Tests
 		{
 			Assert.AreEqual (string.Format("requests/{0}", _requestId), _getRequest.Resource);
 		}
+		
 		[Test]
 		public void Should_Set_Bearer()
 		{
@@ -62,12 +63,5 @@ namespace CoverMyDotNet.Tests
 		{
 			Assert.AreEqual(_getRequest.RootElement, "request");
 		}
-		
-		[Test]
-		public void Should_Set_ContentType()
-		{
-			Assert.AreEqual (DataFormat.Json, _getRequest.RequestFormat);
-		}
-
 	}
 }

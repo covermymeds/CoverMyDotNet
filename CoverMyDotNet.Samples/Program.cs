@@ -52,8 +52,6 @@ namespace CoverMyDotNet.Samples
 				}
 			}).Tokens.First().Id);
 			var requests = client.GetRequests(tokens.ToArray());
-			foreach (var v in requests.Requests)
-				Console.WriteLine(v.PDFUrl);
 		}
 		public static void Main (string[] args)
 		{

@@ -11,7 +11,6 @@ namespace CoverMyDotNet.Requests
 			this.Method = Method.DELETE;
 			Resource = string.Format("requests/{0}", requestId);
 			this.AddJsonBody(deleteRequest);
-			RequestFormat = DataFormat.Json;
 			this.AddQueryParameter ("v", "1");
 			this.AddParameter("Authorization", string.Format("Bearer {0}+{1}", apiId, tokenId), ParameterType.HttpHeader);
 		}

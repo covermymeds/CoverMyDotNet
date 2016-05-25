@@ -16,8 +16,8 @@ namespace CoverMyDotNet
 		{
 			this.BaseUrl = new Uri("https://api.covermymeds.com");
 			//try to get the api creds from the environment first
-			_apiId = Environment.GetEnvironmentVariable("cmm_api_id");
-			_apiSecret = Environment.GetEnvironmentVariable("cmm_api_secret");			
+			_apiId = Environment.GetEnvironmentVariable("CMM_API_ID");
+			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");			
 		}
 
 		public Client(string apiId, string apiSecret) : base()
@@ -48,7 +48,7 @@ namespace CoverMyDotNet
 			return Execute<ResponseListAttributes>(request).Data;
 		}
 
-		public void UpdateResponse(string requestId, string tokenId, string memo)
+		public void UpdateRequest(string requestId, string tokenId, string memo)
 		{
 			var request = new Requests.PutRequest(_apiId, requestId, tokenId, memo);
 			Execute(request);

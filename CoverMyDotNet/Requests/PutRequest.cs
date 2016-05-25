@@ -10,7 +10,6 @@ namespace CoverMyDotNet.Requests
 			this.JsonSerializer = new CoverMyDotNet.JsonSerializer ();
 			Method = Method.PUT;
 			Resource = string.Format("requests/{0}", requestId);
-			RequestFormat = DataFormat.Json;
 			this.AddJsonBody (new CreateRequestModel()
 				{
 					Request = new RequestAttributes()
