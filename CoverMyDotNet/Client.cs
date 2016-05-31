@@ -122,11 +122,12 @@ namespace CoverMyDotNet
 			return Execute<IndicatorResponseAttributes>(request).Data;
 		}
 
-		public IRestResponse<IndicatorSearchResultAttributes> SearchIndicators(IndicatorSearchAttributes indicator)
+		public IndicatorSearchResultAttributes SearchIndicators(IndicatorSearchAttributes indicator)
 		{
 			var request = new Requests.SearchIndicator(_apiId, indicator);
-			return Execute<IndicatorSearchResultAttributes>(request);
+			return Execute<IndicatorSearchResultAttributes>(request).Data;
 		}
+
 	}
 }
 
