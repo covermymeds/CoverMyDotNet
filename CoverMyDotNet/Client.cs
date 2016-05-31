@@ -97,10 +97,35 @@ namespace CoverMyDotNet
 			var request = new Requests.SearchForm(_apiId, drugId, state, threshold, bin, pcn, groupId);
 			return Execute<FormAttributeList>(request).Data;
 		}
-			public FormAttributeList SearchForms(string drugId, string state, string q)
+
+		public FormAttributeList SearchForms(string drugId, string state, string q)
 		{
 			var request = new Requests.SearchForm(_apiId, drugId, state, q);
 			return Execute<FormAttributeList>(request).Data;
+		}
+
+		public TokenAttributesList PostTokens(string[] ids)
+		{
+			var request = new Requests.PostToken(_apiId, _apiSecret, ids);
+			return Execute<TokenAttributesList>(request).Data;
+		}
+
+		public IRestResponse DeleteToken(string tokenId)
+		{
+			var request = new Requests.DeleteToken(_apiId, _apiSecret, tokenId);
+			return Execute(request);
+		}
+
+		public IndicatorResponseAttributes PostIndicator(IndicatorAttributes indicator)
+		{
+			var request = new Requests.PostIndicator(_apiId, indicator);
+			return Execute<IndicatorResponseAttributes>(request).Data;
+		}
+
+		public IRestResponse<IndicatorSearchResultAttributes> SearchIndicators(IndicatorSearchAttributes indicator)
+		{
+			var request = new Requests.SearchIndicator(_apiId, indicator);
+			return Execute<IndicatorSearchResultAttributes>(request);
 		}
 	}
 }

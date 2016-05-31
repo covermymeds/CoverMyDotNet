@@ -72,9 +72,20 @@
     <Compile Include="Models\Common\ProvidedCodedReferenceAttributes.cs" />
     <Compile Include="Models\Common\CodedReferenceAttributes.cs" />
     <Compile Include="Models\Common\DrugAttributes.cs" />
+    <Compile Include="Models\Common\IndicatorPharmacyAttributes.cs" />
+    <Compile Include="Models\Common\IndicatorPerscriberAttributes.cs" />
     <Compile Include="Requests\GetRequestPage.cs" />
     <Compile Include="Requests\GetForm.cs" />
     <Compile Include="Requests\SearchForm.cs" />
+    <Compile Include="Requests\PostToken.cs" />
+    <Compile Include="Requests\DeleteToken.cs" />
+    <Compile Include="Models\Common\IndicatorAttributes.cs" />
+    <Compile Include="Requests\PostIndicator.cs" />
+    <Compile Include="Models\Common\IndicatorResponseAttributes.cs" />
+    <Compile Include="Models\Common\IndicatorPrescriptionAttributes.cs" />
+    <Compile Include="Models\Common\IndicatorSearchAttributes.cs" />
+    <Compile Include="Requests\SearchIndicator.cs" />
+    <Compile Include="Models\Common\CredentialAttributes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
