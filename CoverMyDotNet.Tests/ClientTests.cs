@@ -433,5 +433,80 @@ namespace CoverMyDotNet.Tests
 				Assert.That(called);
 			}
 		}
+
+		[Test]
+		public void Should_Client_Post_Indicator_Correctly()
+		{
+			string requestContent = "";
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/indicators", "POST", (req, rsp, prm) => 
+				{
+					requestContent = req.Content();
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers))
+			{
+				_client.PostIndicator(new IndicatorAttributes()
+				{
+					Patient = new PatientAttributes()
+					{
+						FirstName = "Sally",
+						LastName = "test4",
+						DateOfBirth = DateTime.Parse("3/4/1990"),
+						Email = "example@example.com",
+						Address = new AddressAttributes()
+					},
+					Payer = new PayerAttributes()
+					{
+						Bin = "773836",
+						PCN = "MOCKPBM",
+						GroupId = "ABC1",
+					},				
+					Prescriber = new IndicatorPrescriberAttributes()
+					{
+						NPI = "1234567890",		
+						LastName = "Dr. Jones",
+						Address = new AddressAttributes()						
+					},
+					Pharmacy = new IndicatorPharmacyAttributes()
+					{
+						NPI = "1234567890",
+						Address = new AddressAttributes()
+					},
+					Prescription = new IndicatorPrescriptionAttributes()
+					{
+						DrugId = "094563",
+						Refills = 30,
+						Quantity = 3					
+					}
+				});
+				Assert.That(requestContent, Is.StringContaining("\"first_name\": \"Sally\""));
+				Assert.That(requestContent, Is.StringContaining("\"email\": \"example@example.com\""));
+				Assert.That(requestContent, Is.StringContaining("\"bin\": \"773836\""));
+				Assert.That(requestContent, Is.StringContaining("\"npi\": \"1234567890\""));
+			}
+		}
+
+		[Test]
+		public void Should_Client_Post_Indicator_Parse_Data_Correctly()
+		{
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/indicators/", "POST", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/Indicator.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm) => rsp.Header("Content-Type", "application/json")))
+			{
+				var resp = _client.PostIndicator(new IndicatorAttributes());
+				Assert.AreEqual(resp.Patient.Address.State, "OH");
+				Assert.AreEqual(resp.Payer.Bin, "015581");
+				Assert.AreEqual(resp.Prescription.PARequired, false);
+				Assert.AreEqual(resp.Prescription.Predicted, false);
+				Assert.AreEqual(resp.Prescription.Autostart, false);
+			}
+		}
 	}
 }

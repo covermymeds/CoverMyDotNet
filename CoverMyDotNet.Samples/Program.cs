@@ -24,7 +24,7 @@ namespace CoverMyDotNet.Samples
 					PhoneNumber = "555-555-5555"
 				},
 				Payer = new PayerAttributes()
-				{
+				{			
 					Bin = "773836",
 					PCN = "MOCKPBM",
 					GroupId = "ABC1",
@@ -202,9 +202,10 @@ namespace CoverMyDotNet.Samples
 									
 				}
 			});
-			foreach(var v in indicator.Data.Prescriptions)
+			foreach(var v in indicator.Prescriptions)
 				Console.WriteLine("PA Required ? " + v.PARequired.ToString());
 		}
+
 
 		public static void Main (string[] args)
 		{

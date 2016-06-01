@@ -69,8 +69,9 @@ namespace CoverMyDotNet
 
 		public IRestResponse<RequestPageAttributes> GetRequestPage(string requestId, string tokenId)
 		{
-			var request = new Requests.GetRequestPage(_apiId, _apiSecret, requestId, tokenId);
-			return Execute<RequestPageAttributes>(request);
+			//var request = new Requests.GetRequestPage(_apiId, _apiSecret, requestId, tokenId);
+			//return Execute<RequestPageAttributes>(request);
+			return null;
 		}
 
 		public DrugListAttributes SearchDrugs(string query)
