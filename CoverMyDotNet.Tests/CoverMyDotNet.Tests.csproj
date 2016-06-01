@@ -52,6 +52,7 @@
     <Compile Include="GetRequestsTests.cs" />
     <Compile Include="DeleteRequestTests.cs" />
     <Compile Include="PutRequestTests.cs" />
+    <Compile Include="GetRequestPageTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
