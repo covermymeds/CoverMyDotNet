@@ -20,7 +20,7 @@ namespace CoverMyDotNet.Requests
 			this.AddQueryParameter("state", state);
 			this.AddQueryParameter("bin", bin);
 			this.AddQueryParameter("pcn", pcn);
-			this.AddQueryParameter("groupId", groupId);
+			this.AddQueryParameter("group_id", groupId);
 			this.AddQueryParameter("threshold", threshold);
 		}
 
