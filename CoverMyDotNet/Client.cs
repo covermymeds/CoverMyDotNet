@@ -1,0 +1,70 @@
+﻿using RestSharp;
+using System.Net.Http;
+using System;
+
+namespace CoverMyDotNet
+{
+	public class Client : RestClient
+	{
+		private string _apiId;
+		private string _apiSecret;
+
+		public string ApiId { get { return _apiId; }}
+		public string ApiSecret { get { return _apiSecret; }}
+
+		public Client() : base()
+		{
+			var apiUrl = Environment.GetEnvironmentVariable("CMM_API_URL");
+			this.BaseUrl = new Uri(string.IsNullOrEmpty(apiUrl) ? 
+				"https://api.covermymeds.com" : apiUrl);
+			//try to get the api creds from the environment first
+			_apiId = Environment.GetEnvironmentVariable("CMM_API_ID");
+			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");			
+		}
+
+		public Client(string apiId, string apiSecret, string apiUrl = "https://api.covermymeds.com") : base()
+		{
+			this.BaseUrl = new Uri(apiUrl);			
+			_apiId = apiId;
+			_apiSecret = apiSecret;
+		}
+
+		public ResponseAttributes CreateRequest(RequestAttributes requestData)
+		{
+			var request = new Requests.PostRequest(_apiId, _apiSecret, new CreateRequestModel()
+			{
+				Request = requestData
+			});
+			return Execute<ResponseAttributes>(request).Data;
+		}
+		
+		public ResponseAttributes GetRequest(string requestId, string tokenId)
+		{
+			var request = new Requests.GetRequest(_apiId, tokenId, requestId);
+			return Execute<ResponseAttributes>(request).Data;
+		}
+
+		public ResponseListAttributes GetRequests(string[] tokens)
+		{
+			var request = new Requests.GetRequests(_apiId, tokens);
+			return Execute<ResponseListAttributes>(request).Data;
+		}
+
+		public void UpdateRequest(string requestId, string tokenId, string memo)
+		{
+			var request = new Requests.PutRequest(_apiId, requestId, tokenId, memo);
+			Execute(request);
+		}
+
+		public void DeleteResponse(string requestId, string tokenId, RemoteUserAttributes remoteUser)
+		{
+			var request = new Requests.DeleteRequest(_apiId, tokenId, requestId, new DeleteRequestModel()
+			{
+				RemoteUser = remoteUser,
+				TokenId = tokenId
+			});
+			Execute(request);
+		}
+	}
+}
+
