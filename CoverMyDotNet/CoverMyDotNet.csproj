@@ -70,6 +70,7 @@
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="JsonContractResolver.cs" />
     <Compile Include="Models\Common\ValidationAttributes.cs" />
+    <Compile Include="Models\APIException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

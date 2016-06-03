@@ -35,7 +35,25 @@ namespace CoverMyDotNet
 			//for the requestpages
 			AddHandler("application/typed+json", new RestSharp.Deserializers.JsonDeserializer());				
 		}
-
+ 
+		public override IRestResponse<T> Execute<T>(IRestRequest request)
+		{
+			var resp = base.Execute<T>(request);
+			var errorResp = new RestSharp.Deserializers.JsonDeserializer().Deserialize<APIExceptionResponse>(resp);
+			if(errorResp.Errors != null)
+			{
+				foreach(var v in errorResp.Errors)
+				{
+					var e = new Exception("The Api Returned an error response. See exception Data for more information");
+					e.Data.Add("Code", v.Code);
+					e.Data.Add("Message", v.Message);
+					e.Data.Add("Debug", v.Debug);
+					throw e;
+				}
+			}
+			return resp;
+		}
+		
 		public ResponseAttributes CreateRequest(RequestAttributes requestData)
 		{
 			var request = new Requests.PostRequest(_apiId, _apiSecret, new CreateRequestModel()
