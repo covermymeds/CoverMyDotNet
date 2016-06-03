@@ -280,6 +280,50 @@ namespace CoverMyDotNet.Tests
 				Assert.That(called);
 			}
 		}
+
+		[Test]
+		public void Should_Client_Handle_Error_Correctly()
+		{
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/requests/", "POST", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/SingleError.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm) => rsp.Header("Content-Type", "application/json")))
+			{
+				var ex = Assert.Throws<Exception>(() => 
+				{
+					_client.CreateRequest(new RequestAttributes());
+				});
+				Assert.AreEqual(ex.Data["Message"], "Client Error");
+				Assert.AreEqual(ex.Data["Debug"], "It's your fault.");
+				Assert.AreEqual(ex.Data["Code"], 400000);
+			}
+		}
+
+		[Test]
+		public void Should_Client_Handle_Multiple_Errors_Correctly()
+		{
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/requests/", "POST", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/MultipleErrors.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm) => rsp.Header("Content-Type", "application/json")))
+			{
+				var ex = Assert.Throws<Exception>(() => 
+				{
+					_client.CreateRequest(new RequestAttributes());
+				});
+				Assert.AreEqual(ex.Data["Message"], "Client Error");
+				Assert.AreEqual(ex.Data["Debug"], "It's your fault.");
+				Assert.AreEqual(ex.Data["Code"], 400000);
+			}
+		}
 	}
 }
 

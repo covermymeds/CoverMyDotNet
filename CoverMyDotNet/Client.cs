@@ -39,21 +39,24 @@ namespace CoverMyDotNet
 		public override IRestResponse<T> Execute<T>(IRestRequest request)
 		{
 			var resp = base.Execute<T>(request);
-			var errorResp = new RestSharp.Deserializers.JsonDeserializer().Deserialize<APIExceptionResponse>(resp);
-			if(errorResp.Errors != null)
+			if(!string.IsNullOrEmpty(resp.Content))
 			{
-				foreach(var v in errorResp.Errors)
+				var errorResp = new RestSharp.Deserializers.JsonDeserializer().Deserialize<APIExceptionResponse>(resp);
+				if(errorResp.Errors != null)
 				{
-					var e = new Exception("The Api Returned an error response. See exception Data for more information");
-					e.Data.Add("Code", v.Code);
-					e.Data.Add("Message", v.Message);
-					e.Data.Add("Debug", v.Debug);
-					throw e;
+					foreach(var v in errorResp.Errors)
+					{
+						var e = new Exception("The Api Returned an error response. See exception Data for more information");
+						e.Data.Add("Code", v.Code);
+						e.Data.Add("Message", v.Message);
+						e.Data.Add("Debug", v.Debug);
+						throw e;
+					}
 				}
 			}
 			return resp;
 		}
-		
+
 		public ResponseAttributes CreateRequest(RequestAttributes requestData)
 		{
 			var request = new Requests.PostRequest(_apiId, _apiSecret, new CreateRequestModel()
