@@ -51,6 +51,12 @@
     <Compile Include="Models\Common\AuthorizationPeriodAttributes.cs" />
     <Compile Include="Models\Common\TokenAttributes.cs" />
     <Compile Include="Models\Common\RemoteUserAttributes.cs" />
+    <Compile Include="Models\Common\RequestPageAttributes.cs" />
+    <Compile Include="Models\Common\FormQuestionAttributes.cs" />
+    <Compile Include="Models\Common\ActionAttributes.cs" />
+    <Compile Include="Models\Common\ProvidedCodedReferenceAttributes.cs" />
+    <Compile Include="Models\Common\QuestionAttributes.cs" />
+    <Compile Include="Models\Common\CodedReferenceAttributes.cs" />
     <Compile Include="Models\Common\AssociatedRequestsAttributes.cs" />
     <Compile Include="Models\Common\EventAttributes.cs" />
     <Compile Include="Models\CreateRequestModel.cs" />
@@ -75,6 +81,10 @@
     <Compile Include="Requests\GetRequestPage.cs" />
     <Compile Include="Requests\GetForm.cs" />
     <Compile Include="Requests\SearchForm.cs" />
+    <Compile Include="Requests\GetRequestPage.cs" />
+    <Compile Include="JsonSerializer.cs" />
+    <Compile Include="JsonContractResolver.cs" />
+    <Compile Include="Models\Common\ValidationAttributes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

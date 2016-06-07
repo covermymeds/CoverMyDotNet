@@ -223,7 +223,7 @@ namespace CoverMyDotNet.Tests
 				_client.SearchDrugs(drug_name);
 				Assert.That(requestContent.Any(p => p.Key == "q"));
 				Assert.That(requestContent.Any(p => p.Value == drug_name));
-			}	
+			}
 		}
 
 		[Test]
@@ -266,7 +266,7 @@ namespace CoverMyDotNet.Tests
 			{
 				_client.GetDrug(drug_id);
 				Assert.That(called);
-			}
+			}	
 		}
 	}
 }

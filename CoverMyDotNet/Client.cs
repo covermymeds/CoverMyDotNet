@@ -1,8 +1,9 @@
 ﻿using RestSharp;
 using System.Net.Http;
+using System.Net;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 namespace CoverMyDotNet
 {
 	public class Client : RestClient
@@ -19,15 +20,21 @@ namespace CoverMyDotNet
 			this.BaseUrl = new Uri(string.IsNullOrEmpty(apiUrl) ? 
 				"https://api.covermymeds.com" : apiUrl);
 			//try to get the api creds from the environment first
+			this.FollowRedirects = false; //we dont want to follow redirects because when we do, it does not post the correct headers
 			_apiId = Environment.GetEnvironmentVariable("CMM_API_ID");
-			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");			
+			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");		
+			//for the requestpages
+			AddHandler("application/typed+json", new RestSharp.Deserializers.JsonDeserializer());	
 		}
 
 		public Client(string apiId, string apiSecret, string apiUrl = "https://api.covermymeds.com") : base()
 		{
 			this.BaseUrl = new Uri(apiUrl);			
+			this.FollowRedirects = false;
 			_apiId = apiId;
 			_apiSecret = apiSecret;
+			//for the requestpages
+			AddHandler("application/typed+json", new RestSharp.Deserializers.JsonDeserializer());				
 		}
 
 		public ResponseAttributes CreateRequest(RequestAttributes requestData)
@@ -97,7 +104,8 @@ namespace CoverMyDotNet
 			var request = new Requests.SearchForm(_apiId, drugId, state, threshold, bin, pcn, groupId);
 			return Execute<FormAttributeList>(request).Data;
 		}
-			public FormAttributeList SearchForms(string drugId, string state, string q)
+		
+		public FormAttributeList SearchForms(string drugId, string state, string q)
 		{
 			var request = new Requests.SearchForm(_apiId, drugId, state, q);
 			return Execute<FormAttributeList>(request).Data;
