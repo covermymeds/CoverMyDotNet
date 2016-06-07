@@ -1,0 +1,20 @@
+{
+  "indicator": {
+    "patient": {
+      "address": {
+        "state": "OH"
+      }
+    },
+    "payer": {
+      "bin": "015581",
+      "pcn": "03200000",
+      "group_id": "P5347"
+    },
+    "prescription": {
+      "drug_id": "182448",
+      "pa_required": false,
+      "predicted": false,
+      "autostart": false
+    }
+  }
+}

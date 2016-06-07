@@ -1,0 +1,7 @@
+{
+	"errors":
+	[
+		{"code":400000,"message":"Client Error","debug":"It's your fault."},
+		{"code":500000,"message":"Another Client Error","debug":"It's your fault....again"}	
+	]
+}
