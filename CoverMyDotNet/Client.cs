@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Net;
 using System;
 using System.Linq;
+using System.Collections.Generic;
+
 namespace CoverMyDotNet
 {
 	public class Client : RestClient
@@ -63,14 +65,50 @@ namespace CoverMyDotNet
 			Execute(request);
 		}
 
-		public void DeleteResponse(string requestId, string tokenId, RemoteUserAttributes remoteUser)
+		public IRestResponse DeleteResponse(string requestId, string tokenId, RemoteUserAttributes remoteUser)
 		{
 			var request = new Requests.DeleteRequest(_apiId, tokenId, requestId, new DeleteRequestModel()
 			{
 				RemoteUser = remoteUser,
 				TokenId = tokenId
 			});
-			Execute(request);
+			return Execute(request);
+		}
+
+		public IRestResponse<RequestPageAttributes> GetRequestPage(string requestId, string tokenId)
+		{
+			var request = new Requests.GetRequestPage(_apiId, _apiSecret, requestId, tokenId);
+			return Execute<RequestPageAttributes>(request);
+		}
+
+		public DrugListAttributes SearchDrugs(string query)
+		{
+			var request = new Requests.SearchDrugs(_apiId, query);
+			return Execute<DrugListAttributes>(request).Data;
+		}
+
+		public DrugAttributes GetDrug(string id)
+		{
+			var request = new Requests.GetDrug(_apiId, id);
+			return Execute<DrugAttributes>(request).Data;
+		}
+
+		public FormAttributes GetForm(string id)
+		{
+			var request = new Requests.GetForm(_apiId, id);
+			return Execute<FormAttributes>(request).Data;
+		}
+
+		public FormAttributeList SearchForms(string drugId, string state, string threshold, 
+			 string bin, string pcn, string groupId)
+		{
+			var request = new Requests.SearchForm(_apiId, drugId, state, threshold, bin, pcn, groupId);
+			return Execute<FormAttributeList>(request).Data;
+		}
+			public FormAttributeList SearchForms(string drugId, string state, string q)
+		{
+			var request = new Requests.SearchForm(_apiId, drugId, state, q);
+			return Execute<FormAttributeList>(request).Data;
 		}
 		public RequestPageAttributes GetRequestPage(string requestId, string tokenId)
 		{
