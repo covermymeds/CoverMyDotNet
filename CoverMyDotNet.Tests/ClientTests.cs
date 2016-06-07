@@ -183,6 +183,7 @@ namespace CoverMyDotNet.Tests
 				Assert.AreEqual(resp.Requests.Count, 5);
 			}
 		}
+		//[Test]
 		public void Should_Client_Delete_Post_Correct_Data()
 		{
 			string id = Guid.NewGuid().ToString();
@@ -190,7 +191,7 @@ namespace CoverMyDotNet.Tests
 			string requestContent = "";
 			var requestHandlers = new List<MockHttpHandler>()
 			{
-				new MockHttpHandler("/requests/", "DELETE", (req, rsp, prm) => 
+				new MockHttpHandler("/requests", "DELETE", (req, rsp, prm) => 
 				{
 					requestContent = req.Content();
 				})
@@ -202,6 +203,69 @@ namespace CoverMyDotNet.Tests
 					DisplayName = "Steve"
 				});
 				Assert.GreaterOrEqual(requestContent.IndexOf("Steve"), 0);
+			}	
+		}
+
+		[Test]
+		public void Should_Client_Search_Drug_Use_Correct_Data()
+		{
+			string drug_name = Guid.NewGuid().ToString();
+			Dictionary<string, string> requestContent = new Dictionary<string, string>();
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/drugs", "GET", (req, rsp, prm) => 
+				{
+					requestContent = prm;
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers))
+			{
+				_client.SearchDrugs(drug_name);
+				Assert.That(requestContent.Any(p => p.Key == "q"));
+				Assert.That(requestContent.Any(p => p.Value == drug_name));
+			}
+		}
+
+		[Test]
+		public void Should_Client_Search_Drug_Parse_Data()
+		{
+			string drug_name = Guid.NewGuid().ToString();
+			Dictionary<string, string> requestContent = new Dictionary<string, string>();
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/drugs", "GET", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/Drugs.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm)=> rsp.Header("Content-Type", "application/json")))
+			{
+				var drugs = _client.SearchDrugs(drug_name);
+				Assert.AreEqual(drugs.Drugs.Count, 3);
+				Assert.AreEqual(drugs.Drugs.First().FullName, "Boniva 150MG tablets");
+				Assert.AreEqual(drugs.Drugs.First().Strength, "150");
+				Assert.AreEqual(drugs.Drugs[1].Href, "https://staging.api.covermymeds.com/drugs/094563");
+				Assert.AreEqual(drugs.Drugs[2].GPI, "30042048102030");
+			}	
+		}
+
+
+		[Test]
+		public void Should_Client_Get_Drug_Use_Correct_Data()
+		{
+			string drug_id = Guid.NewGuid().ToString();
+			bool called = false;
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler(string.Format("/drugs/{0}", drug_id), "GET", (req, rsp, prm) => 
+				{
+					called = true;
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers))
+			{
+				_client.GetDrug(drug_id);
+				Assert.That(called);
 			}	
 		}
 	}
