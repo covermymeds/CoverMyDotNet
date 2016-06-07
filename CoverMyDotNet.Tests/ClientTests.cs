@@ -204,6 +204,126 @@ namespace CoverMyDotNet.Tests
 				Assert.GreaterOrEqual(requestContent.IndexOf("Steve"), 0);
 			}	
 		}
+
+		[Test]
+		public void Should_Client_Request_Pages_Use_Correct_Resouce()
+		{
+			string id = Guid.NewGuid().ToString();
+			string token = Guid.NewGuid().ToString();
+			bool called = false;
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/request-pages/" + id, "GET", (req, rsp, prm) => 
+				{
+					called = true;
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers))
+			{
+				_client.GetRequestPage(id, token);
+				Assert.That(called);
+			}	
+		}
+
+		[Test]
+		public void Should_Client_Request_Pages_Parse_Data_Correctly()
+		{
+			string id = Guid.NewGuid().ToString();
+			string token = Guid.NewGuid().ToString();
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/request-pages/" + id, "GET", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/RequestPage.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm)=> rsp.Header("Content-Type", "application/json")))
+			{
+				var page = _client.GetRequestPage(id, token);
+				Assert.AreEqual(page.Forms.Count, 1);
+				Assert.AreEqual(page.Forms.First().Identifier, "pa_request");
+				Assert.AreEqual(page.Forms.First().QuestionSets.Count, 5);
+				Assert.AreEqual(page.Forms.First().QuestionSets.First().Questions.Count, 1);
+				Assert.AreEqual(page.Forms.First().QuestionSets.First().Questions.First().QuestionType, "STATEMENT");
+				Assert.AreEqual(page.Actions.Count, 1);
+				Assert.AreEqual(page.Actions.First().Title, "Change Outcome");
+				Assert.That(page.ProvidedCodedReferences, Is.Empty);
+				Assert.AreEqual(page.Validations.Count, 2);
+				Assert.AreEqual(page.Validations.Last().Type, "REGEX");
+				Assert.That(page.Validations.First().Message, Is.Null);
+			}	
+		}
+
+		[Test]
+		public void Should_Client_Request_Page_Follow_303()
+		{
+			string id = Guid.NewGuid().ToString();
+			string token = Guid.NewGuid().ToString();
+			bool called = false;
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/request-pages/" + id, "GET", (req, rsp, prm) => 
+				{
+					rsp.AddHeader("Location", string.Format("http://localhost:{0}/request-pages/{1}/choose-form?token_id=1234", 
+																DEFAULT_MOCK_PORT, id));
+					rsp.StatusCode(303);
+				}),
+				new MockHttpHandler("/request-pages/" + id + "/choose-form", "GET", (req, rsp, prm) => 
+				{
+					called = true;
+				})
+
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm) => rsp.Header("Content-Type", "application/json")))
+			{
+				_client.GetRequestPage(id, token);
+				Assert.That(called);
+			}
+		}
+
+		[Test]
+		public void Should_Client_Handle_Error_Correctly()
+		{
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/requests/", "POST", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/SingleError.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm) => rsp.Header("Content-Type", "application/json")))
+			{
+				var ex = Assert.Throws<Exception>(() => 
+				{
+					_client.CreateRequest(new RequestAttributes());
+				});
+				Assert.AreEqual(ex.Data["Message"], "Client Error");
+				Assert.AreEqual(ex.Data["Debug"], "It's your fault.");
+				Assert.AreEqual(ex.Data["Code"], 400000);
+			}
+		}
+
+		[Test]
+		public void Should_Client_Handle_Multiple_Errors_Correctly()
+		{
+			var requestHandlers = new List<MockHttpHandler>()
+			{
+				new MockHttpHandler("/requests/", "POST", (req, rsp, prm) => 
+				{
+					return File.ReadAllText("Fixtures/MultipleErrors.json");
+				})
+			};
+			using(new MockServer(DEFAULT_MOCK_PORT, requestHandlers, (req, rsp, prm) => rsp.Header("Content-Type", "application/json")))
+			{
+				var ex = Assert.Throws<Exception>(() => 
+				{
+					_client.CreateRequest(new RequestAttributes());
+				});
+				Assert.AreEqual(ex.Data["Message"], "Client Error");
+				Assert.AreEqual(ex.Data["Debug"], "It's your fault.");
+				Assert.AreEqual(ex.Data["Code"], 400000);
+			}
+		}
 	}
 }
 

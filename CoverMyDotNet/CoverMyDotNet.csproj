@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,20 +48,29 @@
     <Compile Include="Models\Common\PrescriptionAttributes.cs" />
     <Compile Include="Models\Common\RequestAttributes.cs" />
     <Compile Include="Models\Common\ResponseAttributes.cs" />
-    <Compile Include="Models\Common\AuthorizationPeriodAttributes.cs" />    
-    <Compile Include="Models\Common\TokenAttributes.cs" />    
+    <Compile Include="Models\Common\AuthorizationPeriodAttributes.cs" />
+    <Compile Include="Models\Common\TokenAttributes.cs" />
     <Compile Include="Models\Common\RemoteUserAttributes.cs" />
+    <Compile Include="Models\Common\RequestPageAttributes.cs" />
+    <Compile Include="Models\Common\FormQuestionAttributes.cs" />
+    <Compile Include="Models\Common\ActionAttributes.cs" />
+    <Compile Include="Models\Common\ProvidedCodedReferenceAttributes.cs" />
+    <Compile Include="Models\Common\QuestionAttributes.cs" />
+    <Compile Include="Models\Common\CodedReferenceAttributes.cs" />
     <Compile Include="Models\Common\AssociatedRequestsAttributes.cs" />
     <Compile Include="Models\Common\EventAttributes.cs" />
-    <Compile Include="Models\CreateRequestModel.cs" />  
+    <Compile Include="Models\CreateRequestModel.cs" />
     <Compile Include="Models\DeleteRequestModel.cs" />
     <Compile Include="Requests\GetRequest.cs" />
     <Compile Include="Requests\PutRequest.cs" />
     <Compile Include="Requests\GetRequests.cs" />
     <Compile Include="Requests\PostRequest.cs" />
     <Compile Include="Requests\DeleteRequest.cs" />
+    <Compile Include="Requests\GetRequestPage.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="JsonContractResolver.cs" />
+    <Compile Include="Models\Common\ValidationAttributes.cs" />
+    <Compile Include="Models\APIException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -1,7 +1,8 @@
 ﻿using RestSharp;
 using System.Net.Http;
+using System.Net;
 using System;
-
+using System.Linq;
 namespace CoverMyDotNet
 {
 	public class Client : RestClient
@@ -18,15 +19,42 @@ namespace CoverMyDotNet
 			this.BaseUrl = new Uri(string.IsNullOrEmpty(apiUrl) ? 
 				"https://api.covermymeds.com" : apiUrl);
 			//try to get the api creds from the environment first
+			this.FollowRedirects = false; //we dont want to follow redirects because when we do, it does not post the correct headers
 			_apiId = Environment.GetEnvironmentVariable("CMM_API_ID");
-			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");			
+			_apiSecret = Environment.GetEnvironmentVariable("CMM_API_SECRET");		
+			//for the requestpages
+			AddHandler("application/typed+json", new RestSharp.Deserializers.JsonDeserializer());	
 		}
 
 		public Client(string apiId, string apiSecret, string apiUrl = "https://api.covermymeds.com") : base()
 		{
 			this.BaseUrl = new Uri(apiUrl);			
+			this.FollowRedirects = false;
 			_apiId = apiId;
 			_apiSecret = apiSecret;
+			//for the requestpages
+			AddHandler("application/typed+json", new RestSharp.Deserializers.JsonDeserializer());				
+		}
+ 
+		public override IRestResponse<T> Execute<T>(IRestRequest request)
+		{
+			var resp = base.Execute<T>(request);
+			if(!string.IsNullOrEmpty(resp.Content))
+			{
+				var errorResp = new RestSharp.Deserializers.JsonDeserializer().Deserialize<APIExceptionResponse>(resp);
+				if(errorResp.Errors != null)
+				{
+					foreach(var v in errorResp.Errors)
+					{
+						var e = new Exception("The Api Returned an error response. See exception Data for more information");
+						e.Data.Add("Code", v.Code);
+						e.Data.Add("Message", v.Message);
+						e.Data.Add("Debug", v.Debug);
+						throw e;
+					}
+				}
+			}
+			return resp;
 		}
 
 		public ResponseAttributes CreateRequest(RequestAttributes requestData)
@@ -64,6 +92,22 @@ namespace CoverMyDotNet
 				TokenId = tokenId
 			});
 			Execute(request);
+		}
+		public RequestPageAttributes GetRequestPage(string requestId, string tokenId)
+		{
+			var request = new Requests.GetRequestPage(_apiId, requestId, tokenId);
+			var resp = Execute<RequestPageAttributes>(request);
+			while(resp.StatusCode == HttpStatusCode.SeeOther)
+			{
+				string resource = resp.Headers.First(p => p.Name == "Location").Value.ToString();
+				//we only need the resource part of the URL
+				resource = resource.Substring(resource.IndexOf("request-pages"), 
+					resource.IndexOf("?") - resource.IndexOf("request-pages"));
+
+				resp = Execute<RequestPageAttributes>(
+					new Requests.GetRequestPage(_apiId, requestId, tokenId, resource));
+			}
+			return resp.Data;
 		}
 	}
 }
